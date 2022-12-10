@@ -1,0 +1,44 @@
+################################################################################
+##        Name: traefik.yml
+##
+## Description: traefik reverse proxy 
+## 
+##      Author: abcddev@yahoo.com
+##        Date: December 11th 2022
+##     Version: 0.1.0-0
+##    Revision: -
+################################################################################
+log:
+  filepath: "/var/log/traefik/traefik.log"
+  format: "json"
+  level: DEBUG
+
+accesslog:
+  filepath: "/var/log/traefik/access.log"
+  format: "json"
+  bufferingSize: 2
+
+api:
+  insecure: true
+  dashboard: true
+
+entrypoints:
+  web:
+    address: ':80'
+    http:
+      redirections:
+        entryPoint:
+          to: tls
+          scheme: https
+  tls:
+    address: ':443'
+
+providers:
+  docker:
+    #endpoint has to be set in docker-compose file.
+    #endpoint: 'unix:///Users/egon/.docker/run/docker.sock'
+    exposedByDefault: false
+  
+  file:
+    directory: /etc/traefik/dynConf
+

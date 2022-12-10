@@ -1,8 +1,16 @@
-# Dependencies
-.psci_modules
-bower_components
-node_modules
+################################################################################
+##        Name: .gitignore
+##
+## Description: version control must not watch files listede here.
+## 
+##      Author: abcddev@yahoo.com
+##        Date: December, 11th 2022
+##     Version: 0.0.1-0
+##    Revision: 0 - 10.12.22 - eg - init
+################################################################################
+# no syslog
+log/access.log
+log/traefik.log
 
-# Generated files
-.psci
-output
+# no certificates
+crt/*

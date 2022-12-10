@@ -1,0 +1,56 @@
+################################################################################
+##        Name: docker-compose.yml
+##
+## Description: container to run and configure traefik.
+## 
+##      Author: abcddev@yahoo.com
+##        Date: December 11th 2022
+##     Version: 0.1.0-0
+##    Revision: -
+################################################################################
+version: '3.8'
+
+services:
+  reverse-proxy:
+    image: traefik:latest
+    ports:
+      - "80:80"     # http port
+      - "443:443"   # https port
+      - "8080:8080" # webui
+    networks:
+      - front
+    volumes:
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/dynConf.yml:/etc/traefik/dynConf/config.yml:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./log:/var/log/traefik
+      - ./crt:/etc/traefik/crt
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.enable=true
+ 
+  whoami:
+    # Test container
+    image: traefik/whoami
+    deploy: 
+      mode: replicated
+      replicas: 2
+    networks:
+      - front
+    labels: 
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Path("/whoami")
+      - traefik.http.routers.whoami.tls=true
+      - traefik.http.routers.whoami.entrypoints=tls
+
+networks:
+  front:
+    name: frontend
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+          gateway: 10.0.1.1
+        - subnet: fd00:A:0:1::/64
+          gateway: fd00:A:0:1::1
+    

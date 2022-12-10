@@ -1,0 +1,20 @@
+################################################################################
+##        Name: dynConf.yml
+##
+## Description: traefik reverse proxy dynamic configuration
+## 
+##      Author: abcddev@yahoo.com
+##        Date: December 11th 2022
+##     Version: 0.1.0-0
+##    Revision: -
+################################################################################
+tls:
+  certificates:
+    certFile: /etc/traefik/crt/traefik-pub.pem
+    keyFile: /etc/traefik/crt/traefik-key.pem
+
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/traefik/crt/traefik-pub.pem
+        keyFile: /etc/traefik/crt/traefik-key.pem
